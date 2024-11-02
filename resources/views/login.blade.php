@@ -19,16 +19,18 @@
 
 <body class="vh-100 d-flex justify-content-center align-items-center">
     <div class="w-25">
-        <form class="border p-4">
+        <form class="border p-4" method = "POST" action = "{{route('authenticate')}}">
+            @csrf
             <h1>Login</h1>
-            <div class="form-group mt-2">
+            <div class="form-group mt-2" >
                 <label for="txtEmail">Email address</label>
-                <input type="email" class="form-control" id="txtEmail" aria-describedby="emailHelp"
+                <!-- Old method is used to keep the mail if the authenticaiton is failed -->
+                <input value= "<?php echo old("email") ?>" type="email" class="form-control" name = "email" id="txtEmail" aria-describedby="emailHelp"
                     placeholder="Enter email">
             </div>
             <div class="form-group mt-2">
                 <label for="txtPwd">Password</label>
-                <input type="password" class="form-control" id="txtPwd" placeholder="Password">
+                <input type="password" class="form-control" name = "password" id="txtPwd" placeholder="Password">
             </div>
             <div class="d-flex justify-content-between form-group mt-2">
                 <a href="{{route('signup')}}">New Member?</a>
@@ -53,6 +55,7 @@
                 $("#txtPwd").prop("type", "password");
             }
         });
+
     })
 
 </script>
