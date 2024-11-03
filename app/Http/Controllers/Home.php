@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class Home extends Controller
 {
+    public function home(Request $request){
+        echo "Zyam";
+    } 
     
 }

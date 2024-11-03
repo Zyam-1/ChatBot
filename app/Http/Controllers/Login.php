@@ -20,8 +20,18 @@ class Login extends Controller
         ]);
 
         if(Auth::attempt($credentials)){
-
+            echo $request->session()->regenerate();
         }
+        else echo "False Email or Password";
 
+    }
+
+    public function logout(Request $request){
+        // print_r($request->session());
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerate();
+        // print_r($request->session());
+        return redirect('/login');
     }
 }
