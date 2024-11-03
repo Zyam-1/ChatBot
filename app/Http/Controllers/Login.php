@@ -20,18 +20,20 @@ class Login extends Controller
         ]);
 
         if(Auth::attempt($credentials)){
-            echo $request->session()->regenerate();
+            $request->session()->regenerate();
+            return redirect()->intended('/home');
+
         }
-        else echo "False Email or Password";
+        return back()->withErrors([
+            "email"=> "Please check your credentials"
+        ])->onlyInput("email");
 
     }
 
     public function logout(Request $request){
-        // print_r($request->session());
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerate();
-        // print_r($request->session());
         return redirect('/login');
     }
 }

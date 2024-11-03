@@ -19,7 +19,7 @@ Route::get("/logout", [Login::class, 'logout'])->name('logout');
 Route::post("/authenticate",[Login::class, 'authenticate'])->name('authenticate');
 
 Route::middleware([EnsureUserLoggedIn::class])->group(function(){
-Route::get("/home",[Home::class, 'home'])->name('home');
+    Route::get("/home",[Home::class, 'home'])->name('home');
 
 });
 
