@@ -248,17 +248,25 @@ a.article:hover {
         </nav>
 
         <!-- Page Content  -->
-        <div id="content">
+        <div id="content" style = "postion: relative;">
 
             <nav class="navbar navbar-expand-lg  navbar-light bg-light"  >
                 <div class="container-fluid">
 
-                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                    <button style=" background: #7386D5;" type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
                         <span id="toggleChats">Hide Chats</span>
                     </button>
                 </div>
             </nav>
+            <div class="d-flex justify-content-center mt-3">
+            
+            <textarea style="position: absolute; bottom: 0; overflow: hidden; padding-right: 3.8rem;" class = "mb-3" cols = "100" rows="3"  name="message" id="message" placeholder="Type your message"
+            required=""></textarea>
+            
+            </div>
+            
+            </div>
         </div>
     </div>
 </body>
