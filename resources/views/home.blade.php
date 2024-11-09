@@ -11,7 +11,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.7.1.js"
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     <title>Bot AI</title>
     <style>
@@ -136,6 +136,7 @@
             border-radius: 8px;
             cursor: pointer;
         }
+
     </style>
 </head>
 
@@ -157,7 +158,8 @@
                 </li>
                 <li><a href="#">About</a></li>
                 <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                        class="dropdown-toggle">Pages</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li><a href="#">Page 1</a></li>
                         <li><a href="#">Page 2</a></li>
@@ -169,7 +171,8 @@
             </ul>
             <div id="userProfile" class="text-center p-3">
                 <p>{{ auth()->user()->name }}</p>
-                <a href="{{ route('logout') }}" title="Logout" class="text-white"><i class="fa-solid fa-right-from-bracket"></i></a>
+                <a href="{{ route('logout') }}" title="Logout" class="text-white"><i
+                        class="fa-solid fa-right-from-bracket"></i></a>
             </div>
         </nav>
 
@@ -186,11 +189,12 @@
             <!-- Messages Section -->
             <div class="MessagesContainer" id="messageContainer">
                 <!-- Messages will appear here -->
+                <div class="message received">asdasdass</div>
             </div>
 
             <!-- Message Input -->
             <div class="message-input-container">
-                <textarea id="message" rows="1" placeholder="Type your message here..."></textarea>
+                <textarea id="message" class="txtMessage" rows="1" placeholder="Type your message here..."></textarea>
                 <button id="sendBtn"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
@@ -220,15 +224,35 @@
                 let message = $('#message').val().trim();
                 if (message) {
                     $('#messageContainer').append(`<div class="message sent">${message}</div>`);
-                    $('#message').val('');
                     scrollToBottom();
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('sendMessage') }}",
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            message: message
+                        },
+                        success: function (res) {
+                            console.log(res);
+                        }
+                    })
                 }
+
+                //send Message to Gemini
+
+                $('#message').val('');
+
             }
 
             function scrollToBottom() {
-                $('#messageContainer').animate({ scrollTop: $('#messageContainer')[0].scrollHeight }, 300);
+                $('#messageContainer').animate({
+                    scrollTop: $('#messageContainer')[0].scrollHeight
+                }, 300);
             }
+
         });
+
     </script>
 </body>
 

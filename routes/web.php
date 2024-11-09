@@ -24,4 +24,5 @@ Route::get("/logout", [Login::class, 'logout'])->name('logout');
 
 Route::middleware([EnsureUserLoggedIn::class])->group(function(){
     Route::get("/home",[Home::class, 'home'])->name('home');
+    Route::post("/sendMessage",[Home::class, 'HandleMessageResponse'])->name('sendMessage');
 });
