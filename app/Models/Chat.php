@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Chat extends Model
 {
     protected $fillable = [
-        'name'
+        'title',
+        'user_id'
     ];
 
     public function messages(): HasMany
