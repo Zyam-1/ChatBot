@@ -216,6 +216,7 @@
 
             function sendMessage() {
                 let message = $('#message').val().trim();
+
                 if (message) {
                     $('#messageContainer').append(`<div class="message sent">${message}</div>`);
                     scrollToBottom();
@@ -226,7 +227,8 @@
                         url: "{{ route('sendMessage') }}",
                         data: {
                             "_token": "{{ csrf_token() }}",
-                            message: message
+                            message: message,
+                            ChatID : "{{app('request')->input('id')}}"
                         },
                         success: function (res) {
                             $("#messageContainer").append(

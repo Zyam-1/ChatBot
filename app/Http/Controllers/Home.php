@@ -26,14 +26,13 @@ class Home extends Controller
         }
         // return $messages;
         $Chats = Chat::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->toArray();
-        
         return view('home')->with('Chats', $Chats)->with('messages',  $messages);
     } 
 
     public function HandleMessageResponse(Request $request){
         $NewMessage =  $request->message;
-
-        if (empty($request->CID)){
+        // return empty($request->ChatID);
+        if (empty($request->ChatID)){
             $Chat = New Chat;
             $Message = New Message;
             $Response = New Message;
