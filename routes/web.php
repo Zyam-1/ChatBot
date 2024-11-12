@@ -15,14 +15,17 @@ Route::get( '/', function () {
 
 Route::middleware([EnsureUserIsntLogin::class])->group(function(){
     Route::get("/SignUp", [SignUp::class, 'display'])->name("signup");
-    Route::get("/login",[Login::class, 'login'])->name('login');
-    Route::post("/authenticate",[Login::class, 'authenticate'])->name('authenticate');
+    Route::get("/Login",[Login::class, 'login'])->name('login');
+    Route::post("/Authenticate",[Login::class, 'authenticate'])->name('authenticate');
 });
 
-Route::get("/logout", [Login::class, 'logout'])->name('logout');
+Route::get("/Logout", [Login::class, 'logout'])->name('logout');
 
 
 Route::middleware([EnsureUserLoggedIn::class])->group(function(){
-    Route::get("/home",[Home::class, 'home'])->name('home');
+    Route::get("/Home",[Home::class, 'home'])->name('home');
+    
+
+
     Route::post("/sendMessage",[Home::class, 'HandleMessageResponse'])->name('sendMessage');
 });

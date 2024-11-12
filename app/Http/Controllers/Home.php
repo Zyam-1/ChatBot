@@ -13,25 +13,31 @@ use Illuminate\Http\Request;
 
 class Home extends Controller
 {
+    // public function homeChatById(Request $request,$id){
+    //     return $id;
+    // }
     public function home(Request $request){
+        $messages = [];
+        if($request->has('id')){
+            $ChatID = trim($request->query('id'));
+            if(!empty($ChatID)){
+                $messages = Message::where('chat_id', $ChatID)->orderBy('created_at', 'asc')->get(['content', 'status']);
+            }
+        }
+        // return $messages;
         $Chats = Chat::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->toArray();
-        // return $Chats;
-        return view('home')->with('Chats', $Chats);
+        
+        return view('home')->with('Chats', $Chats)->with('messages',  $messages);
     } 
 
     public function HandleMessageResponse(Request $request){
         $NewMessage =  $request->message;
-        // if($request->ChatID){
-        //     $result = Gemini::geminiPro()->generateContent($NewMessage);
-        //     return $result->text();
-        // }
-        // else{
+
         if (empty($request->CID)){
-            // $ChatID = $request->ChatID;
             $Chat = New Chat;
             $Message = New Message;
             $Response = New Message;
-            //Created New Chat
+            
             $Chat->title = "";
             $Chat->user_id = Auth::user()->id;
             $Chat->save();
@@ -52,9 +58,7 @@ class Home extends Controller
             $Response->status = "received";
             $Response->save();
 
-            return $result->text();
-
-
+            return $ResToText;
 
         }
         

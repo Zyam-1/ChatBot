@@ -149,7 +149,9 @@
             </div>
             <ul class="list-unstyled components">
                 @foreach($Chats as $chat)
-                    <li  data-id="{{ $chat['id'] }}"><a href="">{{ $chat['title'] }} </a>
+                    <li data-id="{{ $chat['id'] }}"><a
+                            href="{{ route('home', ['id'=> $chat['id']]) }}">{{ $chat['title'] }}
+                        </a>
                     </li>
                 @endforeach
             </ul>
@@ -159,7 +161,6 @@
                         class="fa-solid fa-right-from-bracket"></i></a>
             </div>
         </nav>
-
         <!-- Page Content -->
         <div id="content">
             <!-- Top Navbar -->
@@ -176,8 +177,13 @@
 
             <!-- Messages Section -->
             <div class="MessagesContainer" id="messageContainer">
-                <!-- Messages will appear here -->
-
+                @if(!empty($messages))
+                    @foreach($messages as $message )
+                       
+                            <div class="{{$message->status}} message">{{ $message->content }}</div>
+                        
+                    @endforeach
+                @endif
             </div>
 
             <!-- Message Input -->
