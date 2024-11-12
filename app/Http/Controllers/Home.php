@@ -31,16 +31,21 @@ class Home extends Controller
 
     public function HandleMessageResponse(Request $request){
         $NewMessage =  $request->message;
+
+        $Message = New Message;
+        $Response = New Message;
         // return empty($request->ChatID);
         if (empty($request->ChatID)){
             $Chat = New Chat;
-            $Message = New Message;
-            $Response = New Message;
+            $TitleMessage = $NewMessage. "  Generate a Title for the text above. Whatever the title is. Only give me the title. Leave all the message behind";
+
+            $FetchTitle = Gemini::geminiPro()->generateContent($TitleMessage);
+            $title = $FetchTitle->text();
             
-            $Chat->title = "";
+            $Chat->title = $title;
             $Chat->user_id = Auth::user()->id;
             $Chat->save();
-            
+          
             $Message->content = trim($NewMessage);
             $Message->chat_id = $Chat->id;
             $Message->status = "sent";
@@ -56,10 +61,41 @@ class Home extends Controller
             $Response->chat_id = $Chat->id;
             $Response->status = "received";
             $Response->save();
+            $ResponseArr = [];
 
-            return $ResToText;
+            $ResponseArr[0] = $Chat->id;
+            $ResponseArr[1] = $ResToText;
+
+
+            return $ResponseArr;
 
         }
+        // else{
+            
+            $Message->content = trim($NewMessage);
+            $Message->chat_id = $request->ChatID;
+            $Message->status = "sent";
+
+            $Message->save();
+
+            // $History = Message::where('status', 'sent')
+            //                     ->where('chat_id', $Chat->id)
+
+            $result = Gemini::geminiPro()->generateContent($NewMessage);
+            $ResToText =  $result->text();
+            $Response->content = $ResToText;
+            $Response->chat_id = $request->ChatID;
+            $Response->status = "received";
+            $Response->save();
+            // $ResponseArr = [];
+
+            // '$ResponseArr[0] = $request->id;
+            $ResponseArr = $ResToText;
+
+
+            return $ResponseArr;
+
+        // }
         
         
     }

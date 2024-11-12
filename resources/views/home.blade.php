@@ -179,9 +179,9 @@
             <div class="MessagesContainer" id="messageContainer">
                 @if(!empty($messages))
                     @foreach($messages as $message )
-                       
-                            <div class="{{$message->status}} message">{{ $message->content }}</div>
-                        
+
+                        <div class="{{ $message->status }} message">{{ $message->content }}</div>
+
                     @endforeach
                 @endif
             </div>
@@ -197,6 +197,8 @@
     <script>
         $(document).ready(function () {
             // Sidebar toggle
+            const url = window.location.href;
+            // console.log(currentUrl);
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
                 $("#toggleChats").text($('#sidebar').hasClass('active') ? "Show Chats" : "Hide Chats");
@@ -228,11 +230,24 @@
                         data: {
                             "_token": "{{ csrf_token() }}",
                             message: message,
-                            ChatID : "{{app('request')->input('id')}}"
+                            ChatID: "{{ app('request')->input('id') }}"
                         },
                         success: function (res) {
-                            $("#messageContainer").append(
-                                `<div class = 'message received'>${res}</div>`)
+
+                            if (typeof res === 'string') {
+                                console.log('The variable is a string');
+                                $("#messageContainer").append(
+                                    `<div class = 'message received'>${res}</div>`);
+                            } else if (Array.isArray(res)) {
+                                console.log('The variable is an array');
+                                $("#messageContainer").append(
+                                    `<div class = 'message received'>${res[1]}</div>`);
+                                window.location.replace(url + "?id=" + res[0]);
+
+                            }
+
+                            // console(typeof (res));
+
                         }
                     })
                 }
