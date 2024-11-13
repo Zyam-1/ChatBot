@@ -233,7 +233,7 @@
                             ChatID: "{{ app('request')->input('id') }}"
                         },
                         success: function (res) {
-
+                            // Checks if the return type if array [New Chat] or String [Existing Chat]
                             if (typeof res === 'string') {
                                 console.log('The variable is a string');
                                 $("#messageContainer").append(
@@ -245,9 +245,6 @@
                                 window.location.replace(url + "?id=" + res[0]);
 
                             }
-
-                            // console(typeof (res));
-
                         }
                     })
                 }
