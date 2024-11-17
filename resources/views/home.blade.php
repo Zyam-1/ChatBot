@@ -233,18 +233,20 @@
                             ChatID: "{{ app('request')->input('id') }}"
                         },
                         success: function (res) {
+                            console.log(res);
                             // Checks if the return type if array [New Chat] or String [Existing Chat]
-                            if (typeof res === 'string') {
-                                console.log('The variable is a string');
-                                $("#messageContainer").append(
-                                    `<div class = 'message received'>${res}</div>`);
-                            } else if (Array.isArray(res)) {
-                                console.log('The variable is an array');
-                                $("#messageContainer").append(
-                                    `<div class = 'message received'>${res[1]}</div>`);
-                                window.location.replace(url + "?id=" + res[0]);
+                            // if (typeof res === 'string') {
+                            //     console.log('The variable is a string');
+                            //     $("#messageContainer").append(
+                            //         `<div class = 'message received'>${res}</div>`);
+                            // } else if (Array.isArray(res)) {
+                            //     console.log('The variable is an array');
+                            //     $("#messageContainer").append(
+                            //         `<div class = 'message received'>${res[1]}</div>`);
+                            //     window.location.replace(url + "?id=" + res[0]);
 
-                            }
+                            // }
+                            // console.log(res);
                         }
                     })
                 }

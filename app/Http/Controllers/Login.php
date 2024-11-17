@@ -9,7 +9,21 @@ use Redirect;
 class Login extends Controller
 {
     public function login(Request $request){
-        return view("login");
+        try {
+            //code...
+            return view("login");
+
+        } catch (\Exception $e) {
+            //throw $th;
+            $error = New Error;
+            $error->description = $e->getMessage();
+            $error->lineNumber = $e->getLine();
+            $error->moduleName = "login";
+            $error->fileName = "Login.php";
+            $error->save();
+
+        }
+
     }
 
     public function authenticate(Request $request)  {
@@ -53,7 +67,7 @@ class Login extends Controller
             $error = New Error;
             $error->description = $e->getMessage();
             $error->lineNumber = $e->getLine();
-            $error->moduleName = "Authenticate";
+            $error->moduleName = "Logout";
             $error->fileName = "Login.php";
             $error->save();
         }

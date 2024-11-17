@@ -16,8 +16,8 @@ class SignUp extends Controller
             $error = New Error;
             $error->description = $e->getMessage();
             $error->lineNumber = $e->getLine();
-            $error->moduleName = "Authenticate";
-            $error->fileName = "Login.php";
+            $error->moduleName = "Display";
+            $error->fileName = "SignUps.php";
             $error->save();
         }
     }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Gemini\Data\Content;
+use Gemini\Enums\Role;
 use Gemini\Laravel\Facades\Gemini;
 Use App\Models\Chat;
 Use App\Models\Error;
@@ -44,6 +46,7 @@ class Home extends Controller
 
     public function HandleMessageResponse(Request $request){
         try {
+            // print_r($History);
             //code...
             $NewMessage =  $request->message;
             $Message = New Message;
@@ -51,7 +54,7 @@ class Home extends Controller
         // return empty($request->ChatID);
         if (empty($request->ChatID)){
             $Chat = New Chat;
-            $TitleMessage = $NewMessage. "  Generate a Title for the text above. Whatever the title is. Only give me the title. Leave all the message behind";
+            $TitleMessage = $NewMessage . "  Generate a Title for the text above. Whatever the title is. Only give me the title. Leave all the message behind";
 
             $FetchTitle = Gemini::geminiPro()->generateContent($TitleMessage);
             $title = $FetchTitle->text();
@@ -83,17 +86,37 @@ class Home extends Controller
 
         }
         // else{
+            // $HistoryMessages = [];
+            // $FormatedMessagHis = [];
+
             
+            $HistoryMessages = Message::where('chat_id', $request->ChatID)->orderBy('created_at', 'asc')->take(10)->get(['content', 'status'])->toArray();
+            // print_r($History);
+            // return $HistoryMessages;
+            $FormatedMessagHis = array_map(fn($msg) => Content::parse(part: $msg['content'], role: $msg['status'] == 'received' ? Role::MODEL: Role::USER), $HistoryMessages);
+            // return $FormatedMessagHis;
+            // foreach($HistoryMessages as $HisMessage){
+            //     $HistoryString .= $HisMessage->content;
+                
+            // }
+            // if(substr(trim($HistoryString), - 1) != "."){
+            //     $HistoryString .= ".";
+            // }
+            // return $HistoryString;
+            // 'return  $FormatedMessagHis;
+            $chat = Gemini::chat()->startChat(history: $FormatedMessagHis);
+            $result = Gemini::geminiPro()->generateContent(trim($NewMessage));
+            return $result->text();
             $Message->content = trim($NewMessage);
             $Message->chat_id = $request->ChatID;
             $Message->status = "sent";
 
             $Message->save();
 
-            // $History = Message::where('status', 'sent')
-            //                     ->where('chat_id', $Chat->id)
+            
 
-            $result = Gemini::geminiPro()->generateContent($NewMessage);
+
+            $result = Gemini::geminiPro()->generateContent($HistoryString  . $NewMessage);
             $ResToText =  $result->text();
             $Response->content = $ResToText;
             $Response->chat_id = $request->ChatID;
